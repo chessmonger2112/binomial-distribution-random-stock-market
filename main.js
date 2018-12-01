@@ -7,36 +7,19 @@ var paths4 = [];
 var paths5 = [];
 var paths6 = [];
 
-function calculateAllPaths(path, t, paths, sellpoint) {
-
+function calculateAllPaths(path, t, paths, sellpoint, state) {
   if (path.length === t) {
     paths.push(path);
     return false;
   }
 
-  var state = calculateState(path);
-
   if (state <= sellpoint) {
     return false;
   }
 
-  console.log("state: " + state + " sellpoint: " + sellpoint);
-
-  calculateAllPaths(path + "0", t, paths, sellpoint);
-  calculateAllPaths(path + "1", t, paths, sellpoint);
+  calculateAllPaths(path + "0", t, paths, sellpoint, state - 1);
+  calculateAllPaths(path + "1", t, paths, sellpoint, state + 1);
 }
-
-function calculateState(path) {
-  var paths = path.split("").map(Number);
-  var state = paths.reduce((a,b) => {
-    if (b === 0) {
-      b = -1;
-    }
-    return a + b;
-  }, 0);
-  return state;
-}
-
 
 function doAllTests() {
   calculateAllPaths("", 4, paths1);
