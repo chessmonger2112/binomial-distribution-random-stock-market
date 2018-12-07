@@ -1,52 +1,77 @@
 console.log("sup");
 
-var paths1 = [];
-var paths2 = [];
-var paths3 = [];
-var paths4 = [];
-var paths5 = [];
-var paths6 = [];
+var results1 = {
+  paths: [],
+  expectationValue: 0
+}
 
-function calculateAllPaths(path, t, paths, sellpoint, state) {
+var results2 = {
+  paths: [],
+  expectationValue: 0
+}
+
+var results3 = {
+  paths: [],
+  expectationValue: 0
+}
+
+function calculateAllPaths(path, t, sellpoint, results) {
   if (path.length === t) {
-    paths.push(path);
-    return false;
+    results.paths.push(path);
+    results.expectationValue += evaluatePath(path, sellpoint);
+    return;
   }
 
-  if (state <= sellpoint) {
-    return false;
-  }
+  calculateAllPaths(path + "0", t, sellpoint, results);
+  calculateAllPaths(path + "1", t, sellpoint, results);
+}
 
-  calculateAllPaths(path + "0", t, paths, sellpoint, state - 1);
-  calculateAllPaths(path + "1", t, paths, sellpoint, state + 1);
+function evaluatePath (path, sellpoint) {
+  var value = 0;
+  var arr = path.split("");
+  arr.forEach(priceChange => {
+    if (value <= sellpoint) {
+      return value;
+    }
+
+    var deltaValue = priceChange === "1" ? -1 : 1;
+    value += deltaValue;
+  });
+
+  return value;
+}
+
+var allResults = [];
+var sellpoint = -1;
+getAllExpectationValues()
+
+function getAllExpectationValues() {
+  var results = {
+    paths: [],
+    expectationValue: 0
+  };
+
+  for (var t = 1; t < 20; t ++) {
+     calculateAllPaths("", t, sellpoint, results);
+     var expectationValue = results.expectationValue;
+     allResults.push({
+      expectationValue: expectationValue,
+      t: t,
+      sellpoint: sellpoint
+    });
+  }
 }
 
 function doAllTests() {
-  calculateAllPaths("", 4, paths1);
-  calculateAllPaths("", 2, paths2);
-  calculateAllPaths("", 1, paths3);
-  calculateAllPaths("", 0, paths4);
-  calculateAllPaths("", 5, paths5);
+  calculateAllPaths("", 3, -1, results1);
+  calculateAllPaths("", 3, -2, results2);
+  calculateAllPaths("", 3, -3, results3);
 
-  console.log(paths1.length === 16);
-  console.log(paths2.length === 4);
-  console.log(paths3.length === 2);
-  console.log(paths4.length === 1);
-  console.log(paths5.length === 32);
-
-  var testArrays = [];
-  var answers = [];
-
-  for (var i = 0; i <= 20; i ++) {
-    testArrays.push([]);
-    calculateAllPaths("", i, testArrays[i]);
-    var numberOfPaths = 2 ** i;
-    console.log(testArrays[i].length === numberOfPaths)
-  }
-
-  calculateAllPaths("", 20, paths5);
+  //Checking if the expectation values are correct
+  console.log("Checking if the expectation values are correct");
+  console.log(results1.expectationValue === 0);
+  console.log(results2.expectationValue === 0);
+  console.log(results3.expectationValue === 0);
 }
 
-
-// doAllTests();
-
+doAllTests();
