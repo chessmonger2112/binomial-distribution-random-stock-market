@@ -42,7 +42,6 @@ function evaluatePath (path, sellpoint) {
 }
 
 var allResults = [];
-var sellpoint = -1;
 getAllExpectationValues()
 
 function getAllExpectationValues() {
@@ -52,13 +51,15 @@ function getAllExpectationValues() {
   };
 
   for (var t = 1; t < 20; t ++) {
-     calculateAllPaths("", t, sellpoint, results);
-     var expectationValue = results.expectationValue;
-     allResults.push({
-      expectationValue: expectationValue,
-      t: t,
-      sellpoint: sellpoint
-    });
+    for (var sellpoint = 0; sellpoint >= -t; sellpoint --) {
+        calculateAllPaths("", t, sellpoint, results);
+        var expectationValue = results.expectationValue;
+        allResults.push({
+        expectationValue: expectationValue,
+        t: t,
+        sellpoint: sellpoint
+      });
+     }
   }
 }
 
