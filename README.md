@@ -1,1 +1,5 @@
-The main idea is that this is a selling strategy with random stocks. It has a very unrealtic stock growth model. It assumes that there's an equal chance of moving upward some amount, as there is down the same amount. Given this behavior, is there a sellpoint that once a stock dips to that level it's sold that makes the highest expectation value?
+<h1>A bionamial distribution of a completely random stock market</h1>
+
+This attempts to see if there is a strategy that works for a purely random stock market.
+
+This model is similair to Black–Scholes. In fact, a binomial distribution is a specific case of Black–Scholes when the price movement is only a single value. 
