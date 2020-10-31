@@ -1,4 +1,4 @@
-<h1>A bionamial distribution of a completely random stock market</h1>
+<h4>A bionamial distribution of a completely random stock market</h4>
 
 This attempts to see if there is a strategy that works for a purely random stock market.
 
